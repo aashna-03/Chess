@@ -1,6 +1,6 @@
 import pygame
 pygame.init()
-WIDTH=900
+WIDTH=1200
 HEIGHT=800
 screen=pygame.display.set_mode([WIDTH,HEIGHT])
 pygame.display.set_caption('Two-player Chess')
@@ -83,6 +83,7 @@ piece_list=['pawn','queen','king','knight','rook','bishop'] #according to indexi
 WHITE = (255, 255, 255)
 DARK_GREEN= (100, 200, 50)
 
+
 def draw_board():
     for row in range(8):
         for column in range(8):
@@ -91,9 +92,21 @@ def draw_board():
          
           color = WHITE
           pygame.draw.rect(screen, color, [column * 100, row * 100, 100, 100])
-        else:
-          color=DARK_GREEN
-          pygame.draw.rect(screen, color, [column * 100, row * 100, 100, 100])
+        
+        
+        color=DARK_GREEN
+        pygame.draw.rect(screen, color, [column * 100, row * 100, 100, 100])
+        rect = pygame.Rect(700, 0, 200, 800)
+        pygame.draw.rect(screen, 'gold',rect,width=3)
+        
+
+         
+         
+        rect = pygame.Rect(900, 250, 300, 400)
+        pygame.draw.rect(screen, 'black',rect,width=5) 
+               
+         
+
 
         
 
@@ -102,6 +115,7 @@ def draw_board():
 run=True
 while run:
     timer.tick(fps)
+
     screen.fill('dark green')
     draw_board()
 
