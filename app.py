@@ -1,11 +1,7 @@
 import pygame
 
-
-
-# Initialising pygame module
 pygame.init()
 
-# Setting Width and height of the Chess Game screen
 WIDTH=1500
 HEIGHT=800
 
@@ -206,7 +202,7 @@ def check_bishop(position, color):
     else:
         friends_list = black_locations
         enemies_list = white_locations
-    for i in range(4):  # up-right, up-left, down-right, down-left
+    for i in range(4):  
         path = True
         chain = 1
         if i == 0:
