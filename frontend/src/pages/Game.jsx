@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import ChessBoard from "../components/chess/ChessBoard";
-import { useChessGame } from "../hooks/useWebSocket";
+import { useChessGame } from "../hooks/useWebsocket";
 
 const PIECE_EMOJI = {
     pawn: "♟", knight: "♞", bishop: "♝",
