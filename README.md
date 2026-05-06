@@ -1,14 +1,14 @@
 # ♟️ GambitAI — AI-Powered Chess Web App
-## Web app: [![Live Demo](https://img.shields.io/badge/Live_Demo-gambitai.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://gambitai.vercel.app)
+## Web app: [gambitai.vercel.app](https://gambitai.vercel.app)
 
 I had developed a simple **two-player chess game built in Python + Pygame** during my 1st year of college.
-![Original Chess Game](assets/original.png)
+<img src="assets/original-chess.png" width="500"/>
 
 ## GambitAI is a 2-player chess web app where you can play with friends, get coached by Stockfish + Groq AI, and scout opponents using Lichess and Chess.com data.
 
 ⚠️ Note: Opponent scouting is powered by the Lichess API which is fully open and free. Chess.com scouting may work partially or not at all as Chess.com does not provide a fully public API and restricts access to most player data.
 
-## ✨ Features
+##  Features
 
 ### Game Modes
 - **Classic 2 Player** — play online with a friend via shareable room link, no account needed
@@ -29,7 +29,7 @@ I had developed a simple **two-player chess game built in Python + Pygame** duri
 - Responsive — works on mobile and desktop
 - Installable as a PWA — add to homescreen on any phone
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 ### Frontend
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -52,20 +52,21 @@ I had developed a simple **two-player chess game built in Python + Pygame** duri
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
+```
 Player A (Browser) ←── WebSocket ──→ FastAPI Server ←── WebSocket ──→ Player B (Browser)
                                            │
                                     python-chess (rules)
                                     Stockfish (best move)
                                     Groq LLaMA 3 (explanation)
                                     Lichess API (scouting)
-
+```
 
 ---
 ## Game Modes Guide
 
-### ♟️ Classic 2 Player
+### Classic 2 Player
 1. Click **Classic 2 Player**
 2. Share the room ID with your opponent via WhatsApp or any messenger
 3. They open the link — no account needed
