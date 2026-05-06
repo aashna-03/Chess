@@ -3,6 +3,7 @@
 #### Web app: [gambitai.vercel.app](https://gambitai.vercel.app)
 
 I had developed a simple **two-player chess game built in Python + Pygame** during my 1st year of college.
+
 <img src="assets/original.png" width="500" allign="center"/>
 
 
