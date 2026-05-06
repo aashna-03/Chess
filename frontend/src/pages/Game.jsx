@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import ChessBoard from "../components/chess/chessboard";
-import { useChessGame } from "../hooks/useWebsocket";
+import ChessBoard from "../components/chess/ChessBoard";
+import { useChessGame } from "../hooks/useWebSocket";
 
 const PIECE_EMOJI = {
     pawn: "♟", knight: "♞", bishop: "♝",
@@ -125,21 +125,21 @@ export default function Game() {
 
                     {/* Timer Section */}
                     {timeControl !== "unlimited" && (
-                        <div style={{ 
-                            display: "flex", 
-                            flexDirection: "column", 
-                            gap: 10, 
-                            marginBottom: 20, 
-                            background: "rgba(0,0,0,0.3)", 
-                            padding: 12, 
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 10,
+                            marginBottom: 20,
+                            background: "rgba(0,0,0,0.3)",
+                            padding: 12,
                             borderRadius: 12,
                             border: "1px solid #1a1a1c"
                         }}>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                 <span style={{ fontSize: 12, color: turn === "white" ? "#fff" : "#555", fontWeight: turn === "white" ? "700" : "400" }}>WHITE</span>
-                                <span style={{ 
-                                    fontSize: 20, 
-                                    fontFamily: "monospace", 
+                                <span style={{
+                                    fontSize: 20,
+                                    fontFamily: "monospace",
                                     color: whiteTime < 10 && turn === "white" ? "#ef4444" : (turn === "white" ? "#fff" : "#888"),
                                     fontWeight: "bold",
                                 }}>
@@ -148,9 +148,9 @@ export default function Game() {
                             </div>
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                                 <span style={{ fontSize: 12, color: turn === "black" ? "#fff" : "#555", fontWeight: turn === "black" ? "700" : "400" }}>BLACK</span>
-                                <span style={{ 
-                                    fontSize: 20, 
-                                    fontFamily: "monospace", 
+                                <span style={{
+                                    fontSize: 20,
+                                    fontFamily: "monospace",
                                     color: blackTime < 10 && turn === "black" ? "#ef4444" : (turn === "black" ? "#fff" : "#888"),
                                     fontWeight: "bold",
                                 }}>
@@ -159,7 +159,7 @@ export default function Game() {
                             </div>
                         </div>
                     )}
-                    
+
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", borderTop: "1px solid #222", paddingTop: "12px" }}>
                         <div>
                             <p style={{ margin: 0, fontSize: 10, color: "#555" }}>YOU</p>
