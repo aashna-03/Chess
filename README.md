@@ -1,12 +1,15 @@
 # ♟️ GambitAI — AI-Powered Chess Web App
-## Web app: [gambitai.vercel.app](https://gambitai.vercel.app)
+
+# Web app: [gambitai.vercel.app](https://gambitai.vercel.app)
 
 I had developed a simple **two-player chess game built in Python + Pygame** during my 1st year of college.
-<img src="assets/original-chess.png" width="500"/>
+<img src="assets/original.png" width="500"/>
 
-## GambitAI is a 2-player chess web app where you can play with friends, get coached by Stockfish + Groq AI, and scout opponents using Lichess and Chess.com data.
+
+# GambitAI is a 2-player chess web app where you can play with friends, get coached by Stockfish + Groq AI, and scout opponents using Lichess and Chess.com data.
 
 ⚠️ Note: Opponent scouting is powered by the Lichess API which is fully open and free. Chess.com scouting may work partially or not at all as Chess.com does not provide a fully public API and restricts access to most player data.
+
 
 ##  Features
 
