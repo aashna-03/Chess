@@ -536,7 +536,7 @@ export default function Home() {
                 </div>
             </main>
 
-            <p style={{ color: "#eaedf1ff", fontSize: "18px", marginTop: "48px" }}>
+            <p style={{ color: "#eaedf1ff", fontSize: "16px", marginTop: "48px" }}>
                 Developed by Aashna Ferrao. All rights reserved.
             </p>
         </div>
