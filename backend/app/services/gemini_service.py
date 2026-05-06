@@ -5,9 +5,15 @@ client = Groq(api_key=settings.GROQ_API_KEY)
 
 from stockfish import Stockfish
 import os
+import platform
 
-# stockfish exe lives at the backend root (two levels up from this file)
-STOCKFISH_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "stockfish-windows-x86-64-avx2.exe")
+if platform.system() == "Windows":
+    STOCKFISH_PATH = os.path.join(
+        os.path.dirname(__file__), 
+        "../../stockfish-windows-x86-64-avx2.exe"
+    )
+else:
+    STOCKFISH_PATH = "/usr/games/stockfish"  # Linux (Render)
 
 def get_stockfish():
     return Stockfish(
