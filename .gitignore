@@ -1,20 +1,11 @@
 backend/.env
 frontend/.env
 backend/stockfish-windows-x86-64-avx2.exe
-# Python
-venv/
-__pycache__/
+venv
+__pycache__
 *.pyc
-
-# Node
-node_modules/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
+node_modules
+.vscode
+.idea
 .DS_Store
-
-# executables
 *.exe
