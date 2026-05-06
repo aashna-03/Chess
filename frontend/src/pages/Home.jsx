@@ -144,38 +144,39 @@ const BG_PIECES = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 export default function Home() {
+    const navigate = useNavigate();
+
     const [joinId, setJoinId] = useState("");
     const [loading, setLoading] = useState(false);
-
-    // Room Configuration
+    const [toast, setToast] = useState("");
     const [selectedMode, setSelectedMode] = useState("classic");
     const [selectedBoard, setSelectedBoard] = useState("default");
     const [selectedTime, setSelectedTime] = useState("unlimited");
-
-    // Scout state
     const [scoutInput, setScoutInput] = useState("");
     const [scoutPlatform, setScoutPlatform] = useState("lichess");
     const [scoutReport, setScoutReport] = useState(null);
     const [scoutLoading, setScoutLoading] = useState(false);
     const [scoutError, setScoutError] = useState("");
 
-    const navigate = useNavigate();
-
+    // ── single createRoom function ──────────────────────────
     const createRoom = async () => {
         setLoading(true);
+        setToast("⏳ Waking up server... please wait up to 30 seconds on first load.");
         try {
             const params = new URLSearchParams({
                 mode: selectedMode,
                 board_style: selectedBoard,
-                time_control: selectedTime
+                time_control: selectedTime,
             });
             const res = await fetch(`${API_URL}/game/create?${params.toString()}`, {
                 method: "POST",
             });
             const data = await res.json();
+            setToast("");
             navigate(`/game/${data.room_id}`);
         } catch (err) {
-            alert("Could not connect to server. Make sure backend is running.");
+            setToast("❌ Could not connect. Please try again in a few seconds.");
+            setTimeout(() => setToast(""), 5000);
         } finally {
             setLoading(false);
         }
@@ -254,6 +255,8 @@ export default function Home() {
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
+                    font-family: 'Inter', sans-serif;
+                    font-size: 14px;
                 }
 
                 .btn-primary:hover {
@@ -270,6 +273,7 @@ export default function Home() {
                     padding: 12px 20px;
                     cursor: pointer;
                     transition: all 0.2s;
+                    font-family: 'Inter', sans-serif;
                 }
 
                 .btn-outline:hover {
@@ -286,6 +290,7 @@ export default function Home() {
                     color: #fff;
                     font-size: 14px;
                     transition: all 0.2s;
+                    font-family: 'Inter', sans-serif;
                 }
 
                 .input-field:focus {
@@ -346,6 +351,7 @@ export default function Home() {
                     flex-direction: column;
                     align-items: center;
                     gap: 4px;
+                    font-family: 'Inter', sans-serif;
                 }
 
                 .mode-btn:hover {
@@ -369,39 +375,54 @@ export default function Home() {
                 }
             `}</style>
 
-            <div style={heroStyle}>
-                <h1 style={titleStyle}>
+            {/* Toast */}
+            {toast && (
+                <div style={{
+                    position: "fixed",
+                    bottom: 24,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "#1a1a1a",
+                    border: "1px solid #facc15",
+                    color: "#facc15",
+                    padding: "12px 24px",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    zIndex: 9999,
+                    textAlign: "center",
+                    maxWidth: "90vw",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
+                }}>
+                    {toast}
+                </div>
+            )}
 
-                    Gambit AI
-                </h1>
+            {/* Hero */}
+            <div style={heroStyle}>
+                <h1 style={titleStyle}>Gambit AI</h1>
                 <p style={subtitleStyle}>A little guidance to help you play smarter every move</p>
             </div>
 
             <main style={mainContentStyle}>
-                {/* Create Room Section */}
+                {/* Create Room */}
                 <div className="glass-card" style={createCardStyle}>
                     <h2 style={sectionTitleStyle}>Create a Room</h2>
 
                     <p style={labelStyle}>Game Mode</p>
                     <div className="mode-selector">
-                        <button
-                            className={`mode-btn ${selectedMode === "classic" ? "active" : ""}`}
-                            onClick={() => setSelectedMode("classic")}
-                        >
-                            ♟ Classic
-                        </button>
-                        <button
-                            className={`mode-btn ${selectedMode === "coach" ? "active" : ""}`}
-                            onClick={() => setSelectedMode("coach")}
-                        >
-                            🎓 AI Coach
-                        </button>
-                        <button
-                            className={`mode-btn ${selectedMode === "dice" ? "active" : ""}`}
-                            onClick={() => setSelectedMode("dice")}
-                        >
-                            🎲 Dice
-                        </button>
+                        {[
+                            { id: "classic", label: "♟ Classic" },
+                            { id: "coach", label: "🎓 AI Coach" },
+                            { id: "dice", label: "🎲 Dice" },
+                        ].map(m => (
+                            <button
+                                key={m.id}
+                                className={`mode-btn ${selectedMode === m.id ? "active" : ""}`}
+                                onClick={() => setSelectedMode(m.id)}
+                            >
+                                {m.label}
+                            </button>
+                        ))}
                     </div>
 
                     <p style={labelStyle}>Board Style</p>
@@ -437,13 +458,19 @@ export default function Home() {
                         ))}
                     </div>
 
-                    <button className="btn-primary" onClick={createRoom} disabled={loading} style={{ width: "100%", marginTop: "10px" }}>
+                    <button
+                        className="btn-primary"
+                        onClick={createRoom}
+                        disabled={loading}
+                        style={{ width: "100%", marginTop: "10px" }}
+                    >
                         {loading ? "Creating..." : "Start Game"}
                     </button>
                 </div>
 
+                {/* Right Column */}
                 <div style={rightColumnStyle}>
-                    {/* Join Room Section */}
+                    {/* Join Room */}
                     <div className="glass-card" style={joinCardStyle}>
                         <h2 style={sectionTitleStyle}>Join Room</h2>
                         <div style={{ display: "flex", gap: "8px" }}>
@@ -451,6 +478,7 @@ export default function Home() {
                                 className="input-field"
                                 value={joinId}
                                 onChange={(e) => setJoinId(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && joinRoom()}
                                 placeholder="Enter Room ID"
                                 style={{ flex: 1 }}
                             />
@@ -458,7 +486,7 @@ export default function Home() {
                         </div>
                     </div>
 
-                    {/* Scout Section */}
+                    {/* Scout */}
                     <div className="glass-card" style={scoutCardStyle}>
                         <h2 style={sectionTitleStyle}>Scout Opponent</h2>
                         <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
@@ -466,7 +494,7 @@ export default function Home() {
                                 className="input-field"
                                 value={scoutPlatform}
                                 onChange={(e) => setScoutPlatform(e.target.value)}
-                                style={{ width: "100px" }}
+                                style={{ width: "120px" }}
                             >
                                 <option value="lichess">Lichess</option>
                                 <option value="chesscom">Chess.com</option>
@@ -475,7 +503,8 @@ export default function Home() {
                                 className="input-field"
                                 value={scoutInput}
                                 onChange={(e) => setScoutInput(e.target.value)}
-                                placeholder="Username"
+                                onKeyDown={(e) => e.key === "Enter" && scoutPlayer()}
+                                placeholder="Username or URL"
                                 style={{ flex: 1 }}
                             />
                             <button className="btn-outline" onClick={scoutPlayer} disabled={scoutLoading}>
@@ -483,28 +512,33 @@ export default function Home() {
                             </button>
                         </div>
 
-                        {scoutError && <p style={{ color: "#ef4444", fontSize: "12px" }}>{scoutError}</p>}
+                        {scoutError && (
+                            <p style={{ color: "#ef4444", fontSize: "12px", margin: "0 0 8px" }}>
+                                {scoutError}
+                            </p>
+                        )}
 
                         {scoutReport && (
                             <div style={scoutResultStyle}>
-                                <h3 style={{ margin: "0 0 8px", fontSize: "16px" }}>@{scoutReport.username}</h3>
-                                <div style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.6" }}>
+                                <h3 style={{ margin: "0 0 8px", fontSize: "16px" }}>
+                                    @{scoutReport.username}
+                                </h3>
+                                <div style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.8", whiteSpace: "pre-wrap" }}>
                                     {scoutReport.report}
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <p style={{ textAlign: "center", color: "#334155", fontSize: "12px", marginTop: "40px", fontWeight: "500" }}>
-                        Shared Room ID is required for your opponent to join.
+                    <p style={{ textAlign: "center", color: "#334155", fontSize: "12px", marginTop: "8px", fontWeight: "500" }}>
+                        Share the Room ID with your opponent to join.
                     </p>
-
-
                 </div>
             </main>
 
-            <p> Developed by Aashna Ferrao. All rights reserved. 2026</p>
-
+            <p style={{ color: "#334155", fontSize: "12px", marginTop: "48px" }}>
+                Developed by Aashna Ferrao. All rights reserved.
+            </p>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ChessBoard from "../components/chess/ChessBoard";
 import { useChessGame } from "../hooks/useWebSocket";
 
@@ -12,7 +12,9 @@ export default function Game() {
     const { roomId } = useParams();
     const [analysisText, setAnalysisText] = useState("");
     const [loadingAnalysis, setLoadingAnalysis] = useState(false);
+    const [toast, setToast] = useState("");
 
+    // ── destructure FIRST before using connected ──
     const {
         connected, myColor, gameMode, boardStyle, timeControl, fen, turn, status,
         winner, gameOverReason, isCheck, lastMove,
@@ -21,6 +23,17 @@ export default function Game() {
         sendMove, rollDice, requestCoach, resign, offerDraw, acceptDraw,
         whiteTime, blackTime
     } = useChessGame(roomId);
+
+    // ── now safe to use connected ──
+    useEffect(() => {
+        if (!connected) {
+            setToast("⏳ Connecting to server... this may take up to 30 seconds on first load.");
+            const timer = setTimeout(() => setToast(""), 30000);
+            return () => clearTimeout(timer);
+        } else {
+            setToast("");
+        }
+    }, [connected]);
 
     const formatTime = (seconds) => {
         if (seconds === null || seconds === undefined) return "--:--";
@@ -67,10 +80,32 @@ export default function Game() {
             justifyContent: "center",
         }}>
 
-            {/* Board column */}
-            <div style={{ flex: "0 1 auto", width: "100%", maxWidth: "575px" }} >
+            {/* Toast — inside return now ✅ */}
+            {toast && (
+                <div style={{
+                    position: "fixed",
+                    bottom: 24,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    background: "#1a1a1a",
+                    border: "1px solid #c129f8ff",
+                    color: "#facc15",
+                    padding: "12px 24px",
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontFamily: "monospace",
+                    zIndex: 9999,
+                    textAlign: "center",
+                    maxWidth: "90vw",
+                    boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
+                }}>
+                    {toast}
+                </div>
+            )}
 
-                {/* Status bar above board */}
+            {/* Board column */}
+            <div style={{ flex: "0 1 auto", width: "100%", maxWidth: "575px" }}>
+
                 <div style={{ marginBottom: 16, fontSize: 14, fontWeight: "500" }}>
                     {!opponentConnected ? (
                         <span style={{ color: "#facc15" }}>⏳ Waiting for opponent — share room ID: <b style={{ fontSize: "16px" }}>{roomId}</b></span>
@@ -98,7 +133,6 @@ export default function Game() {
                     boardStyle={boardStyle}
                 />
 
-                {/* Action buttons below board */}
                 {status === "ongoing" && (
                     <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
                         <button onClick={offerDraw} style={{ ...btnStyle("#1a1a1c"), border: "1px solid #333" }}>Offer Draw</button>
@@ -123,7 +157,6 @@ export default function Game() {
                         </div>
                     </div>
 
-                    {/* Timer Section */}
                     {timeControl !== "unlimited" && (
                         <div style={{
                             display: "flex",
@@ -201,28 +234,22 @@ export default function Game() {
                     </div>
                 )}
 
-                {/* AI Coach — only in coach mode */}
+                {/* AI Coach */}
                 {gameMode === "coach" && status === "ongoing" && (
                     <div style={cardStyle("#1a1a1a", "#4ade80")}>
                         <p style={{ margin: "0 0 10px", fontSize: 12, color: "#888" }}>🎓 AI COACH</p>
-
-                        {/* Lifeline icons */}
                         <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
                             {[1, 2, 3].map((i) => (
                                 <span key={i} style={{
                                     fontSize: 20,
                                     opacity: i <= coachLifelines ? 1 : 0.2,
                                     filter: i <= coachLifelines ? "none" : "grayscale(100%)"
-                                }}>
-                                    🎓
-                                </span>
+                                }}>🎓</span>
                             ))}
                             <span style={{ fontSize: 12, color: "#888", alignSelf: "center", marginLeft: 4 }}>
                                 {coachLifelines} remaining
                             </span>
                         </div>
-
-                        {/* Suggestion display */}
                         {coachSuggestion ? (
                             <>
                                 <p style={{ margin: "0 0 2px", fontSize: 15, color: "#4ade80", fontWeight: "bold" }}>
@@ -240,16 +267,10 @@ export default function Game() {
                                     </p>
                                 )}
                                 <div style={{ display: "flex", gap: 8 }}>
-                                    <button
-                                        onClick={() => { sendMove(coachSuggestion.move); setCoachSuggestion(null); }}
-                                        style={{ ...btnStyle("#4ade80", "#000"), flex: 1 }}
-                                    >
+                                    <button onClick={() => { sendMove(coachSuggestion.move); setCoachSuggestion(null); }} style={{ ...btnStyle("#4ade80", "#000"), flex: 1 }}>
                                         ✅ Accept
                                     </button>
-                                    <button
-                                        onClick={() => setCoachSuggestion(null)}
-                                        style={{ ...btnStyle("#374151"), flex: 1 }}
-                                    >
+                                    <button onClick={() => setCoachSuggestion(null)} style={{ ...btnStyle("#374151"), flex: 1 }}>
                                         ❌ Reject
                                     </button>
                                 </div>
@@ -258,12 +279,9 @@ export default function Game() {
                             <button
                                 onClick={requestCoach}
                                 disabled={coachLifelines <= 0 || !isMyTurn}
-                                style={btnStyle(
-                                    coachLifelines > 0 && isMyTurn ? "#4ade80" : "#374151",
-                                    "#000"
-                                )}
+                                style={btnStyle(coachLifelines > 0 && isMyTurn ? "#4ade80" : "#374151", "#000")}
                             >
-                                Ask Coach
+                                Ask Coach 🎓
                             </button>
                         )}
                     </div>
@@ -280,11 +298,7 @@ export default function Game() {
                 {/* Post game analysis */}
                 {status === "game_over" && (
                     <div style={cardStyle("#1a1a1a", "#333")}>
-                        <button
-                            onClick={fetchAnalysis}
-                            disabled={loadingAnalysis}
-                            style={btnStyle("#7c3aed")}
-                        >
+                        <button onClick={fetchAnalysis} disabled={loadingAnalysis} style={btnStyle("#7c3aed")}>
                             {loadingAnalysis ? "⏳ Analysing..." : "🤖 Get AI Analysis"}
                         </button>
                         {analysisText && (
@@ -304,7 +318,7 @@ export default function Game() {
                 )}
 
             </div>
-        </div >
+        </div>
     );
 }
 
