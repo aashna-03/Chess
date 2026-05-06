@@ -1,6 +1,6 @@
 # ♟️ GambitAI — AI-Powered Chess Web App
 
-#Web app: [gambitai.vercel.app](https://gambitai.vercel.app)
+[![GambitAI](https://img.shields.io/badge/Web_App-gambitai.vercel.app-2ea44f?style=for-the-badge&logo=vercel&logoColor=white)](https://gambitai.vercel.app)
 
 I had developed a simple **two-player chess game built in Python + Pygame** during my 1st year of college.
 <img src="assets/original.png" width="500" allign="left"/>
