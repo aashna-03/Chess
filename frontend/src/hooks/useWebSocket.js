@@ -173,3 +173,4 @@ export function useChessGame(roomId) {
         sendMove, rollDice, requestCoach, resign, offerDraw, acceptDraw,
     };
 }
+
