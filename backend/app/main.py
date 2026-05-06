@@ -7,7 +7,7 @@ app = FastAPI(title="Chess App", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", settings.FRONTEND_URL],
+    allow_origins=["http://localhost:5173","gambitai.vercel.app" settings.FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
