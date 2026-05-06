@@ -1,6 +1,6 @@
 {
-    "buildCommand": "bun run build",
+    "buildCommand": "npm run build",
     "outputDirectory": "dist",
-    "installCommand": "bun install",
+    "installCommand": "npm install",
     "framework": "vite"
 }
