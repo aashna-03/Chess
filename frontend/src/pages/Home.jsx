@@ -523,20 +523,20 @@ export default function Home() {
                                 <h3 style={{ margin: "0 0 8px", fontSize: "16px" }}>
                                     @{scoutReport.username}
                                 </h3>
-                                <div style={{ fontSize: "12px", color: "#aaa", lineHeight: "1.8", whiteSpace: "pre-wrap" }}>
+                                <div style={{ fontSize: "12px", color: "#dedbdbff", lineHeight: "1.8", whiteSpace: "pre-wrap" }}>
                                     {scoutReport.report}
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <p style={{ textAlign: "center", color: "#334155", fontSize: "12px", marginTop: "8px", fontWeight: "500" }}>
+                    <p style={{ textAlign: "center", color: "#ced3daff", fontSize: "12px", marginTop: "8px", fontWeight: "500" }}>
                         Share the Room ID with your opponent to join.
                     </p>
                 </div>
             </main>
 
-            <p style={{ color: "#334155", fontSize: "12px", marginTop: "48px" }}>
+            <p style={{ color: "#eaedf1ff", fontSize: "18px", marginTop: "48px" }}>
                 Developed by Aashna Ferrao. All rights reserved.
             </p>
         </div>
