@@ -158,7 +158,7 @@ export default function Home() {
     const [scoutLoading, setScoutLoading] = useState(false);
     const [scoutError, setScoutError] = useState("");
 
-    // ── single createRoom function ──────────────────────────
+
     const createRoom = async () => {
         setLoading(true);
         setToast("⏳ Waking up server... please wait up to 30 seconds on first load.");

@@ -27,7 +27,7 @@ export default function Game() {
     // ── now safe to use connected ──
     useEffect(() => {
         if (!connected) {
-            setToast("⏳ Connecting to server... this may take up to 30 seconds on first load.");
+            setToast("⏳ Connecting to server...");
             const timer = setTimeout(() => setToast(""), 30000);
             return () => clearTimeout(timer);
         } else {
