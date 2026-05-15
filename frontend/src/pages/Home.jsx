@@ -10,7 +10,7 @@ const containerStyle = {
     flexDirection: "column",
     alignItems: "center",
     padding: "60px 20px",
-    background: "radial-gradient(circle at 50% 0%, #1e1b4b 0%, #050505 50%)",
+    background: "radial-gradient(circle at 50% 0%, #050415ff 0%, #050505 50%)",
     position: "relative",
 };
 
@@ -231,7 +231,7 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "radial-gradient(circle at 70% 0%, #ce8ff3ff 0%, #050505 60%)",
+                background: "radial-gradient(circle at 50% 0%, #ce8ff3ff 0%, #050505 60%)",
                 gap: "28px",
                 margin: 0,
                 padding: 0,
@@ -650,7 +650,7 @@ export default function Home() {
                             disabled={scoutLoading}
                             style={{ width: "100%", marginBottom: "16px", padding: "13px" }}
                         >
-                            {scoutLoading ? "⏳ Scouting..." : "🔍 Scout Opponent"}
+                            {scoutLoading ? " Scouting..." : " Scout Opponent"}
                         </button>
 
                         {scoutError && (
@@ -677,8 +677,11 @@ export default function Home() {
                 </div>
             </main>
 
-            <p style={{ color: "#eff0f1ff", fontSize: "14px", marginTop: "48px" }}>
-                Developed by Aashna Ferrao. All rights reserved.
+            <p style={{ color: "#eff0f1ff", fontSize: "14px", marginTop: "48px", textAlign: "center" }}>
+                Developed by Aashna Ferrao
+            </p>
+            <p style={{ color: "#eff0f1ff", fontSize: "14px", marginTop: "5px", textAlign: "center" }}>
+                All rights reserved
             </p>
         </div>
     );
