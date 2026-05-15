@@ -223,16 +223,30 @@ export default function Home() {
     if (appLoading) {
         return (
             <div style={{
-                minHeight: "100vh",
+                position: "fixed",
+                inset: 0,
+                width: "100vw",
+                height: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
                 background: "radial-gradient(circle at 70% 0%, #ce8ff3ff 0%, #050505 60%)",
                 gap: "28px",
+                margin: 0,
+                padding: 0,
+                boxSizing: "border-box",
+                overflow: "hidden",
             }}>
                 <style>{`
                     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap');
+                    *, *::before, *::after { box-sizing: border-box; }
+                    html, body {
+                        margin: 0; padding: 0;
+                        width: 100%; height: 100%;
+                        overflow: hidden;
+                        background: #050505;
+                    }
                     @keyframes pawnBounce {
                         0%, 100% { transform: translateY(0px) scale(1); }
                         40% { transform: translateY(-38px) scale(1.08); }
