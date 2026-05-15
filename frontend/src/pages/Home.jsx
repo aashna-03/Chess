@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
@@ -146,6 +146,7 @@ const BG_PIECES = Array.from({ length: 12 }, (_, i) => ({
 export default function Home() {
     const navigate = useNavigate();
 
+    const [appLoading, setAppLoading] = useState(true);
     const [joinId, setJoinId] = useState("");
     const [loading, setLoading] = useState(false);
     const [toast, setToast] = useState("");
@@ -157,6 +158,11 @@ export default function Home() {
     const [scoutReport, setScoutReport] = useState(null);
     const [scoutLoading, setScoutLoading] = useState(false);
     const [scoutError, setScoutError] = useState("");
+
+    useEffect(() => {
+        const timer = setTimeout(() => setAppLoading(false), 2200);
+        return () => clearTimeout(timer);
+    }, []);
 
 
     const createRoom = async () => {
@@ -214,6 +220,96 @@ export default function Home() {
         }
     };
 
+    if (appLoading) {
+        return (
+            <div style={{
+                minHeight: "100vh",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "radial-gradient(circle at 70% 0%, #ce8ff3ff 0%, #050505 60%)",
+                gap: "28px",
+            }}>
+                <style>{`
+                    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap');
+                    @keyframes pawnBounce {
+                        0%, 100% { transform: translateY(0px) scale(1); }
+                        40% { transform: translateY(-38px) scale(1.08); }
+                        55% { transform: translateY(-38px) scale(1.08); }
+                        80% { transform: translateY(0px) scale(0.95); }
+                    }
+                    @keyframes shadowPulse {
+                        0%, 100% { transform: scaleX(1); opacity: 0.35; }
+                        50% { transform: scaleX(0.45); opacity: 0.1; }
+                    }
+                    @keyframes fadeInLoader {
+                        from { opacity: 0; transform: scale(0.92); }
+                        to   { opacity: 1; transform: scale(1); }
+                    }
+                    @keyframes dotPulse {
+                        0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+                        40% { opacity: 1; transform: scale(1.2); }
+                    }
+                    .loader-wrap {
+                        animation: fadeInLoader 0.5s ease both;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 28px;
+                    }
+                    .pawn-symbol {
+                        font-size: 80px;
+                        animation: pawnBounce 1.1s cubic-bezier(0.4,0,0.2,1) infinite;
+                        filter: drop-shadow(0 0 24px rgba(139,92,246,0.7));
+                        display: block;
+                    }
+                    .pawn-shadow {
+                        width: 54px;
+                        height: 10px;
+                        background: rgba(139,92,246,0.35);
+                        border-radius: 50%;
+                        filter: blur(4px);
+                        animation: shadowPulse 1.1s cubic-bezier(0.4,0,0.2,1) infinite;
+                        margin-top: -18px;
+                    }
+                    .loader-title {
+                        font-family: 'Inter', sans-serif;
+                        font-size: 36px;
+                        font-weight: 900;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        letter-spacing: -1.5px;
+                        margin: 0;
+                    }
+                    .loader-dots {
+                        display: flex;
+                        gap: 8px;
+                        align-items: center;
+                    }
+                    .loader-dots span {
+                        width: 9px;
+                        height: 10px;
+                        background: #faf8ffff;
+                        border-radius: 50%;
+                        display: inline-block;
+                        animation: dotPulse 1.2s ease-in-out infinite;
+                    }
+                    .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+                    .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+                `}</style>
+                <div className="loader-wrap">
+                    <span className="pawn-symbol">♟</span>
+                    <div className="pawn-shadow" />
+                    <p className="loader-title">Gambit AI</p>
+                    <div className="loader-dots">
+                        <span /><span /><span />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div style={containerStyle}>
             {BG_PIECES.map((p, i) => (
@@ -228,6 +324,17 @@ export default function Home() {
                     font-family: 'Inter', sans-serif;
                     color: #fff;
                     overflow-x: hidden;
+                }
+
+                /* Hide scrollbar on mobile */
+                @media (max-width: 768px) {
+                    html, body {
+                        overflow-x: hidden;
+                        scrollbar-width: none;
+                    }
+                    html::-webkit-scrollbar, body::-webkit-scrollbar {
+                        display: none;
+                    }
                 }
 
                 @keyframes floatPiece {
@@ -266,7 +373,7 @@ export default function Home() {
                 }
 
                 .btn-outline {
-                    background: transparent;
+                    background: fill;
                     border: 1px solid rgba(139, 92, 246, 0.3);
                     color: #a78bfa;
                     border-radius: 10px;
@@ -277,13 +384,13 @@ export default function Home() {
                 }
 
                 .btn-outline:hover {
-                    background: rgba(139, 92, 246, 0.1);
+                    background: rgba(163, 15, 220, 0.1);
                     border-color: #8b5cf6;
-                    color: #fff;
+                    color: #f4f4f4ff;
                 }
 
                 .input-field {
-                    background: #0a0a0c;
+                    background: transparent;
                     border: 1px solid #1a1a24;
                     border-radius: 10px;
                     padding: 14px 16px;
@@ -375,32 +482,47 @@ export default function Home() {
                 }
             `}</style>
 
-            {/* Toast */}
+            {/* Toast — centered on screen */}
             {toast && (
                 <div style={{
                     position: "fixed",
-                    bottom: 24,
+                    top: "50%",
                     left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "#1a1a1a",
-                    border: "1px solid #facc15",
-                    color: "#facc15",
-                    padding: "12px 24px",
-                    borderRadius: 8,
-                    fontSize: 13,
-                    zIndex: 9999,
+                    transform: "translate(-50%, -50%)",
+                    background: "rgba(15, 12, 30, 0.96)",
+                    border: "1px solid rgba(139,92,246,0.5)",
+                    color: "#e9d5ff",
+                    padding: "20px 36px",
+                    borderRadius: 16,
+                    fontSize: 15,
+                    fontWeight: 600,
+                    zIndex: 99999,
                     textAlign: "center",
-                    maxWidth: "90vw",
-                    boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
+                    maxWidth: "80vw",
+                    boxShadow: "0 8px 40px rgba(139,92,246,0.35), 0 2px 12px rgba(0,0,0,0.8)",
+                    backdropFilter: "blur(16px)",
+                    letterSpacing: "0.2px",
+                    lineHeight: "1.5",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    animation: "toastIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both",
                 }}>
+                    <span style={{ fontSize: 24 }}>♟</span>
                     {toast}
                 </div>
             )}
+            <style>{`
+                @keyframes toastIn {
+                    from { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+                    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                }
+            `}</style>
 
             {/* Hero */}
             <div style={heroStyle}>
                 <h1 style={titleStyle}>Gambit AI</h1>
-                <p style={subtitleStyle}>A little guidance to help you play smarter every move</p>
+
             </div>
 
             <main style={mainContentStyle}>
@@ -489,7 +611,7 @@ export default function Home() {
                     {/* Scout */}
                     <div className="glass-card" style={scoutCardStyle}>
                         <h2 style={sectionTitleStyle}>Scout Opponent</h2>
-                        <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+                        <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
                             <select
                                 className="input-field"
                                 value={scoutPlatform}
@@ -507,10 +629,15 @@ export default function Home() {
                                 placeholder="Username or URL"
                                 style={{ flex: 1 }}
                             />
-                            <button className="btn-outline" onClick={scoutPlayer} disabled={scoutLoading}>
-                                {scoutLoading ? "..." : "Scout"}
-                            </button>
                         </div>
+                        <button
+                            className="btn-outline"
+                            onClick={scoutPlayer}
+                            disabled={scoutLoading}
+                            style={{ width: "100%", marginBottom: "16px", padding: "13px" }}
+                        >
+                            {scoutLoading ? "⏳ Scouting..." : "🔍 Scout Opponent"}
+                        </button>
 
                         {scoutError && (
                             <p style={{ color: "#ef4444", fontSize: "12px", margin: "0 0 8px" }}>
@@ -523,20 +650,20 @@ export default function Home() {
                                 <h3 style={{ margin: "0 0 8px", fontSize: "16px" }}>
                                     @{scoutReport.username}
                                 </h3>
-                                <div style={{ fontSize: "12px", color: "#dedbdbff", lineHeight: "1.8", whiteSpace: "pre-wrap" }}>
+                                <div style={{ fontSize: "12px", color: "#fffefeff", lineHeight: "1.8", whiteSpace: "pre-wrap" }}>
                                     {scoutReport.report}
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    <p style={{ textAlign: "center", color: "#ced3daff", fontSize: "12px", marginTop: "8px", fontWeight: "500" }}>
+                    <p style={{ textAlign: "center", color: "#e8e8e8ff", fontSize: "12px", marginTop: "8px", fontWeight: "500" }}>
                         Share the Room ID with your opponent to join.
                     </p>
                 </div>
             </main>
 
-            <p style={{ color: "#eaedf1ff", fontSize: "16px", marginTop: "48px" }}>
+            <p style={{ color: "#eff0f1ff", fontSize: "16px", marginTop: "48px" }}>
                 Developed by Aashna Ferrao. All rights reserved.
             </p>
         </div>
