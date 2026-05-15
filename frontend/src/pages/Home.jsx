@@ -231,7 +231,7 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "radial-gradient(circle at 50% 0%, #a428edff 0%, #2a2a2aff 60%)",
+                background: "radial-gradient(circle at 50% 0%, #a428edff 0%, #161515ff 60%)",
                 gap: "28px",
                 margin: 0,
                 padding: 0,
