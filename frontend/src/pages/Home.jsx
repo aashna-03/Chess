@@ -231,7 +231,7 @@ export default function Home() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "radial-gradient(circle at 50% 0%, #ce8ff3ff 0%, #050505 60%)",
+                background: "radial-gradient(circle at 50% 0%, #a428edff 0%, #2a2a2aff 60%)",
                 gap: "28px",
                 margin: 0,
                 padding: 0,
@@ -278,15 +278,7 @@ export default function Home() {
                         filter: drop-shadow(0 0 24px rgba(139,92,246,0.7));
                         display: block;
                     }
-                    .pawn-shadow {
-                        width: 54px;
-                        height: 10px;
-                        background: rgba(139,92,246,0.35);
-                        border-radius: 50%;
-                        filter: blur(4px);
-                        animation: shadowPulse 1.1s cubic-bezier(0.4,0,0.2,1) infinite;
-                        margin-top: -18px;
-                    }
+
                     .loader-title {
                         font-family: 'Inter', sans-serif;
                         font-size: 36px;
