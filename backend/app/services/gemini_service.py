@@ -21,15 +21,7 @@ def get_stockfish():
         depth=15,
         parameters={"Threads": 2, "Minimum Thinking Time": 100}
     )
-try:
-    sf = get_stockfish()
-    sf.set_fen_position("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    test_move = sf.get_best_move()
-    print(f"✅ Stockfish loaded successfully. Test move: {test_move}")
-    print(f"✅ Stockfish path: {STOCKFISH_PATH}")
-except Exception as e:
-    print(f"❌ Stockfish FAILED to load: {e}")
-    print(f"❌ Attempted path: {STOCKFISH_PATH}")
+
 
 async def get_coach_suggestion(board_fen: str, move_history: list[str], turn: str, available_moves: list[str]) -> dict:
     
