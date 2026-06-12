@@ -49,8 +49,8 @@ async def scout_opponent(url_or_username: str) -> dict:
     format_map = {
         "chess_bullet": "bullet",
         "chess_blitz": "blitz",
-        "chess_rapid": "rapid",
-        "chess_daily": "daily",
+        "chess_rapid": "rapid"
+        
     }
     for key, label in format_map.items():
         if key in stats and "last" in stats[key]:
