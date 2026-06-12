@@ -1,3 +1,5 @@
+from unittest import result
+
 from groq import Groq
 from app.core.config import settings
 
@@ -78,18 +80,19 @@ async def get_coach_suggestion(board_fen: str, move_history: list[str], turn: st
         "evaluation": eval_text,
         "top_moves": [m["Move"] for m in top_moves] if top_moves else []
     }
-async def stream_game_analysis(pgn: str, white: str, black: str):
+async def stream_game_analysis(pgn: str, white: str, black: str, result: str = "unknown"):
     stream = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": f"""You are a professional chess coach giving post-game feedback.
 
             Game: {white} (White) vs {black} (Black)
             PGN: {pgn}
+            Result: {result}
 
             Respond in this exact format:
 
             🏆 RESULT
-            One sentence on who won and how.
+            One sentence on who won. The game ended by {result} — do NOT say checkmate unless result explicitly says so.
 
             ⚔️ TURNING POINT
             The single move or moment that decided the game.
