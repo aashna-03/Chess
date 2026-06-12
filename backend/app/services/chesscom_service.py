@@ -58,7 +58,7 @@ async def scout_opponent(url_or_username: str) -> dict:
 
     # Extract win/loss/draw totals
     total_games = wins = losses = draws = 0
-    for key in ["chess_bullet", "chess_blitz", "chess_rapid", "chess_daily"]:
+    for key in ["chess_bullet", "chess_blitz", "chess_rapid"]:
         if key in stats and "record" in stats[key]:
             r = stats[key]["record"]
             wins += r.get("win", 0)
